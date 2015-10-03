@@ -2,10 +2,6 @@ package me.baghino.spark.intro
 
 import org.apache.spark.streaming.StreamingContext._
 import org.apache.spark.streaming.dstream.DStream
-import org.apache.spark.streaming.twitter.TwitterUtils
-import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.spark.{SparkConf, SparkContext}
-import twitter4j.Status
 
 object TwitterExample extends App with TwitterExampleBase {
 
