@@ -28,8 +28,9 @@ trait TwitterExampleBase {
   val streamingContext = new StreamingContext(sparkContext, Seconds(5))
 
   // Creating a stream from Twitter (see the README to learn how to configure it)
+  // Filter tweets for #Iran
   val tweets: DStream[Status] =
-    TwitterUtils.createStream(streamingContext, None)
+    TwitterUtils.createStream(streamingContext, None, Array("#iran"))
 
   // FIXME There's a smarter way to do this: see the "broadcast-var" branch
   val uselessWords = Source.fromFile("src/main/resources/stop-words.dat").getLines().toList
@@ -51,12 +52,12 @@ trait TwitterExampleBase {
   def extractWords(sentence: Sentence): Sentence =
     sentence.map(_.toLowerCase).filter(_.matches("[a-z]+"))
 
+  def computeSentenceScore(words: Sentence): Int =
+    words.map(computeWordScore).sum
+
   def computeWordScore(word: String): Int =
     if (positiveWords.contains(word))       1
     else if (negativeWords.contains(word)) -1
     else                                    0
-
-  def computeSentenceScore(words: Sentence): Int =
-    words.map(computeWordScore).sum
 
 }

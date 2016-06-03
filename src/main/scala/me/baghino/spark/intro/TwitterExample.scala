@@ -5,7 +5,7 @@ import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.twitter.TwitterUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
-import twitter4j.Status
+import twitter4j.{FilterQuery, Status}
 
 object TwitterExample extends App with TwitterExampleBase {
 
@@ -33,7 +33,10 @@ object TwitterExample extends App with TwitterExampleBase {
       filter { case (_, score) => score != 0 }
 
   // Transform the (tweet, score) tuple into a readable string and print it
-  textAndNonNeutralScore.map(makeReadable).print
+  //textAndNonNeutralScore.map(makeReadable).print
+
+  // See tweets text with #iran
+  tweets.map(_.getText).print()
 
   // Now that the streaming is defined, start it
   streamingContext.start()
